@@ -28,6 +28,7 @@ const Input = styled.input`
     margin-top: 24px;
     padding: 5px 0;
     border: none;
+    border-radius: 0;
     border-bottom: 2px solid #7b7b7b;
     box-shadow: none;
     font-family: inherit;
