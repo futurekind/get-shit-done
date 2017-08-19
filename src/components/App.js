@@ -5,6 +5,7 @@ import Wrapper from './shared/Wrapper'
 import Logo from './shared/Logo'
 import Login from './shared/Login'
 import Loader from './shared/Loader'
+import UserActions from './shared/UserActions'
 
 import { fetchData } from '../utils/api';
 
@@ -16,7 +17,7 @@ class App extends Component {
         super(props);
 
         this.state = {
-            user: null,
+            email: null,
             users: [],
             needsToLogin: false,
             hasLoginError: false,
@@ -32,8 +33,13 @@ class App extends Component {
     }
     
     render () {
+        const { users, email } = this.state;
+
+        const user = users.filter(u => u.email === email)[0] || {}
+        
         return (
             <Wrapper>
+                <UserActions user={ user} />
                 <Logo />
 
                 { this.renderLoading() }
@@ -43,7 +49,7 @@ class App extends Component {
     }
 
     renderLogin() {
-        const { needsToLogin, hasLoginError, isFetching, user } = this.state;
+        const { needsToLogin, hasLoginError, isFetching, email } = this.state;
 
         if(isFetching) return null
         if(!needsToLogin) return null
@@ -51,7 +57,7 @@ class App extends Component {
         return <Login 
             onSubmit={ this.handleLogin }
             hasErrors={ hasLoginError }
-            defaultValue={ user }
+            defaultValue={ email }
         />
     }
 
@@ -64,17 +70,17 @@ class App extends Component {
     }
 
     getUserFromLocalStorage() {
-        const user = localStorage.getItem(LS_KEY)
+        const email = localStorage.getItem(LS_KEY)
 
-        if(user && this.checkUser(user)) {
+        if(email && this.checkUser(email)) {
             this.setState({
-                user
+                email
             })
-        } else if(user && !this.checkUser(user)) {
+        } else if(email && !this.checkUser(email)) {
             this.setState({
                 needsToLogin: true,
                 hasLoginError: true,
-                user
+                email
             })
         } else {
             this.setState({
@@ -111,7 +117,7 @@ class App extends Component {
             localStorage.setItem(LS_KEY, email)
             this.setState({
                 needsToLogin: false,
-                user: email,
+                email,
                 hasLoginError: false
             })
         } else {

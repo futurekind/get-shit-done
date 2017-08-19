@@ -12,5 +12,5 @@ export const fetchData = () => new Promise(res => {
         res(Promise.all([
             fetchUsers()
         ]))
-    }, 2000)
+    }, 0)
 })

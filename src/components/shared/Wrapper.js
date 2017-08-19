@@ -5,6 +5,7 @@ const View = styled.section`
     max-width: 1024px;
     margin: 0 auto;
     padding: 24px;
+    position: relative;
 `
 
 const Wrapper = (props) => {
