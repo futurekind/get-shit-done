@@ -10,6 +10,7 @@ import UserActions from './shared/UserActions'
 import Filter from './shared/Filter'
 
 import { fetchData } from '../utils/api';
+import { getJobs } from '../utils/data'
 
 const LS_KEY = 'blat-jobs__user'
 
@@ -26,7 +27,7 @@ class App extends Component {
             hasLoginError: false,
             isFetching: true,
             filter: {
-                status: 'ALL',
+                status: 'OPEN',
                 span: 'WEEK'
             }
         }
@@ -74,6 +75,8 @@ class App extends Component {
             animation: ${appear} 0.5s 0.1s ease-out both
         `
 
+        const jobList = getJobs(this.state);
+        console.log(jobList)
         return (
             <div>
                 <StyledFilter 

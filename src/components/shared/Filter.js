@@ -34,9 +34,9 @@ const Filter = props => {
             <span> Jobs von </span>
             <Select 
                 items={[
+                    {value: 'LAST_WEEK', label: 'letzter Woche'},
                     {value: 'WEEK', label: 'dieser Woche'},
                     {value: 'NEXT_WEEK', label: 'nächster Woche'},
-                    {value: 'LAST_WEEK', label: 'letzter Woche'},
                 ]}
                 value={ props.span }
                 onSelect={ onChangeSpan }
