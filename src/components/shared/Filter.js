@@ -20,7 +20,7 @@ const Filter = props => {
     const onChangeSpan = (e) => props.onChange('span', e.target.value)
     
     return (
-        <View>
+        <View className={ props.className }>
             <span>Zeige </span>
             <Select 
                 items={[

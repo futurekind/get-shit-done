@@ -1,16 +1,19 @@
 const API = 'https://tools.e-contents.de';
 
+const dealWithResponse = resp => {
+    if(resp.ok)  return resp.json()
+    throw new Error()
+}
+
 const fetchUsers = () => 
     fetch(`${API}/users`)
-        .then(resp => {
-            if(resp.ok)  return resp.json()
-            throw new Error()
-        })
+        .then(dealWithResponse)
 
-export const fetchData = () => new Promise(res => {
-    setTimeout(() => {
-        res(Promise.all([
-            fetchUsers()
-        ]))
-    }, 0)
-})
+const fetchJobs = () => 
+    fetch(`${API}/jobs`)
+        .then(dealWithResponse)
+
+export const fetchData = () => Promise.all([
+    fetchUsers(),
+    fetchJobs()
+])

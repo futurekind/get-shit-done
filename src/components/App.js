@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled, { keyframes } from 'styled-components';
 
 import './App.css';
 import Wrapper from './shared/Wrapper'
@@ -20,6 +21,7 @@ class App extends Component {
         this.state = {
             email: null,
             users: [],
+            jobs: [],
             needsToLogin: false,
             hasLoginError: false,
             isFetching: true,
@@ -38,7 +40,7 @@ class App extends Component {
     }
     
     render () {
-        const { users, email, filter } = this.state;
+        const { users, email } = this.state;
 
         const user = users.filter(u => u.email === email && !u.isArchived)[0] || {}
         
@@ -47,16 +49,38 @@ class App extends Component {
                 <Wrapper>
                     <UserActions user={ user} />
                     <Logo />
-
-                    <Filter 
-                        status={ filter.status }
-                        span={ filter.span }
-                        onChange={ this.handleChangeFilter }
-                    />
-
+                    { this.renderMain() }
                     { this.renderLogin() }
                 </Wrapper>
                 { this.renderLoading() }
+            </div>
+        )
+    }
+
+    renderMain() {
+        const {
+            filter,
+            isFetching,
+            needsToLogin
+        } = this.state
+
+        if(isFetching || needsToLogin) return null;
+
+        const appear = keyframes`
+            from { opacity: 0 }
+            to { opacity: 100 }
+        `
+        const StyledFilter = styled(Filter)`
+            animation: ${appear} 0.5s 0.1s ease-out both
+        `
+
+        return (
+            <div>
+                <StyledFilter 
+                    status={ filter.status }
+                    span={ filter.span }
+                    onChange={ this.handleChangeFilter }
+                />
             </div>
         )
     }
@@ -104,11 +128,11 @@ class App extends Component {
     }
 
     recievedData = ([
-        users
+        users, jobs
     ]) => {
         this.setState({
             isFetching: false,
-            users
+            users, jobs
         }, () => {
             this.getUserFromLocalStorage()
         })
