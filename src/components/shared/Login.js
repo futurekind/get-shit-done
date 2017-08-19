@@ -1,12 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import Paper from './Paper';
+
+const appear = keyframes`
+    from {
+        opacity: 0
+    }
+
+    to { opacity: 1}
+`
 
 const View = styled(Paper)`
     max-width: 500px;
     margin: 64px auto;
+    opacity: 0;
+    animation: ${appear} 0.5s 0.1s ease-out both;
 `
 
 const Label = styled.label`
