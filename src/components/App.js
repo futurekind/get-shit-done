@@ -25,7 +25,6 @@ class App extends Component {
     }
 
     componentDidMount () {
-        this.getUserFromLocalStorage()
 
         fetchData()
             .then(this.recievedData)
@@ -44,7 +43,7 @@ class App extends Component {
     }
 
     renderLogin() {
-        const { needsToLogin, hasLoginError, isFetching } = this.state;
+        const { needsToLogin, hasLoginError, isFetching, user } = this.state;
 
         if(isFetching) return null
         if(!needsToLogin) return null
@@ -52,6 +51,7 @@ class App extends Component {
         return <Login 
             onSubmit={ this.handleLogin }
             hasErrors={ hasLoginError }
+            defaultValue={ user }
         />
     }
 
@@ -64,19 +64,24 @@ class App extends Component {
     }
 
     getUserFromLocalStorage() {
-        
-
         const user = localStorage.getItem(LS_KEY)
 
-        if(user) {
+        if(user && this.checkUser(user)) {
             this.setState({
+                user
+            })
+        } else if(user && !this.checkUser(user)) {
+            this.setState({
+                needsToLogin: true,
+                hasLoginError: true,
                 user
             })
         } else {
             this.setState({
-                needsToLogin: true
+                needsToLogin: true,
             })
         }
+
     }
 
     recievedData = ([
@@ -85,21 +90,33 @@ class App extends Component {
         this.setState({
             isFetching: false,
             users
+        }, () => {
+            this.getUserFromLocalStorage()
         })
     }
 
     recievedError(e) {}
+
+    checkUser(email) {
+        const { users } = this.state;
+        return users.filter(u => u.email === email).length > 0
+    }
 
     handleLogin = e => {
         const email = e.target.querySelector('[name="email"]').value
         
         e.preventDefault();
 
-        if(true) {
+        if(this.checkUser(email)) {
             localStorage.setItem(LS_KEY, email)
             this.setState({
                 needsToLogin: false,
-                user: email
+                user: email,
+                hasLoginError: false
+            })
+        } else {
+            this.setState({
+                hasLoginError: true
             })
         }
     }

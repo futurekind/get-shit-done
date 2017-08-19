@@ -63,7 +63,13 @@ const Login = props => {
                     }
                 </Label>
 
-                <Input name="email" type="email" placeholder="Deine E-Mail Adresse" id="login" />
+                <Input 
+                    name="email" 
+                    type="email" 
+                    placeholder="Deine E-Mail Adresse" 
+                    id="login" 
+                    defaultValue={ props.defaultValue }
+                />
             </form>
         </View>
     )
@@ -72,6 +78,7 @@ const Login = props => {
 Login.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     hasErrors: PropTypes.bool,
+    defaultValue: PropTypes.string,
 }
 
 export default Login
