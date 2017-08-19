@@ -6,6 +6,7 @@ import Logo from './shared/Logo'
 import Login from './shared/Login'
 import Loader from './shared/Loader'
 import UserActions from './shared/UserActions'
+import Filter from './shared/Filter'
 
 import { fetchData } from '../utils/api';
 
@@ -21,7 +22,11 @@ class App extends Component {
             users: [],
             needsToLogin: false,
             hasLoginError: false,
-            isFetching: true
+            isFetching: true,
+            filter: {
+                status: 'ALL',
+                span: 'WEEK'
+            }
         }
     }
 
@@ -33,7 +38,7 @@ class App extends Component {
     }
     
     render () {
-        const { users, email } = this.state;
+        const { users, email, filter } = this.state;
 
         const user = users.filter(u => u.email === email)[0] || {}
         
@@ -42,6 +47,12 @@ class App extends Component {
                 <Wrapper>
                     <UserActions user={ user} />
                     <Logo />
+
+                    <Filter 
+                        status={ filter.status }
+                        span={ filter.span }
+                        onChange={ this.handleChangeFilter }
+                    />
 
                     { this.renderLogin() }
                 </Wrapper>
@@ -127,6 +138,15 @@ class App extends Component {
                 hasLoginError: true
             })
         }
+    }
+
+    handleChangeFilter = (type, value) => {
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                [type]: value
+            }
+        })
     }
 }
 
