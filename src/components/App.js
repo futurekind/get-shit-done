@@ -14,7 +14,8 @@ class App extends Component {
 
         this.state = {
             user: null,
-            needsToLogin: false
+            needsToLogin: false,
+            hasLoginError: false
         }
     }
 
@@ -33,13 +34,13 @@ class App extends Component {
     }
 
     renderLogin() {
-        const { needsToLogin } = this.state;
+        const { needsToLogin, hasLoginError } = this.state;
 
         if(!needsToLogin) return null
 
         return <Login 
             onSubmit={ this.handleLogin }
-            hasErrors={ false }
+            hasErrors={ hasLoginError }
         />
     }
 

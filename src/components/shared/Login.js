@@ -33,11 +33,25 @@ const Input = styled.input`
     }
 `
 
+const Error = styled.span`
+    color: #dc0b0b;
+`
+
 const Login = props => {
     return (
         <View>
             <form onSubmit={ props.onSubmit }>
-                <Label htmlFor="login">Sag mir deine E-Mail und ich sag dir was du machst...</Label>
+                <Label htmlFor="login">
+                    { props.hasErrors &&
+                        <Error>Ich würde dir ja gerne deine Jobs zeigen, aber ich kenne dich nicht! 
+                            <br/>Wer bist du? <br/>Hast du dich vertippt? <br/>
+                            Probier's nochmal oder melde dich per Fax bei webmaster@blateral.com</Error>
+                    }
+                    { !props.hasErrors &&
+                        'Sag mir deine E-Mail und ich sag dir was du machst...'
+                    }
+                </Label>
+
                 <Input name="email" type="email" placeholder="Deine E-Mail Adresse" id="login" />
             </form>
         </View>
