@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 
 const View = styled.section`
-    max-width: 1024px;
+    max-width: 648px;
     margin: 0 auto;
     padding: 24px;
     position: relative;

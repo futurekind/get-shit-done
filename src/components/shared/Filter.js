@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import Select from './Select'
 
 const View = styled.section`
-    margin-top: 24px;
-    margin-bottom: 24px;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
     font-weight: 300;
 
     @media (min-width: 48em) {
-        font-size: 120%;
+        font-size: 150%;
     }
 `
 
