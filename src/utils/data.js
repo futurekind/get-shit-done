@@ -29,13 +29,16 @@ export const getJobs = ({
         })
         .filter(job => {
             if(filter.span === 'WEEK') {
+                const inRangeAndNotDone = (job) => {
+                    return isWithinRange(
+                        job.deadlineAt, 
+                        '1970-01-01', 
+                        endOfWeek(lastWeek, {weekStartsOn: 1})
+                    ) && !job.isDone
+                }
+                
                 if(filter.status === 'OPEN' || filter.status === 'ALL') {
-                    return (isSameWeek(job.deadlineAt, now, {weekStartsOn: 1}) ||
-                        isWithinRange(
-                            job.deadlineAt, 
-                            '1970-01-01', 
-                            endOfWeek(lastWeek, {weekStartsOn: 1})
-                        ))
+                    return isSameWeek(job.deadlineAt, now, {weekStartsOn: 1}) || inRangeAndNotDone(job)
                 } else {
                     return isSameWeek(job.deadlineAt, now, {weekStartsOn: 1})
                 }
