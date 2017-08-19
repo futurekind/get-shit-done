@@ -40,7 +40,7 @@ class App extends Component {
     render () {
         const { users, email, filter } = this.state;
 
-        const user = users.filter(u => u.email === email)[0] || {}
+        const user = users.filter(u => u.email === email && !u.isArchived)[0] || {}
         
         return (
             <div>
@@ -118,7 +118,7 @@ class App extends Component {
 
     checkUser(email) {
         const { users } = this.state;
-        return users.filter(u => u.email === email).length > 0
+        return users.filter(u => u.email === email && !u.isArchived).length > 0
     }
 
     handleLogin = e => {
