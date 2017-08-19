@@ -38,13 +38,15 @@ class App extends Component {
         const user = users.filter(u => u.email === email)[0] || {}
         
         return (
-            <Wrapper>
-                <UserActions user={ user} />
-                <Logo />
+            <div>
+                <Wrapper>
+                    <UserActions user={ user} />
+                    <Logo />
 
+                    { this.renderLogin() }
+                </Wrapper>
                 { this.renderLoading() }
-                { this.renderLogin() }
-            </Wrapper>
+            </div>
         )
     }
 
