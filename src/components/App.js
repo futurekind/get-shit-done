@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components';
+import format from 'date-fns/format'
 
 import './App.css';
 import Wrapper from './shared/Wrapper'
@@ -8,6 +9,8 @@ import Login from './shared/Login'
 import Loader from './shared/Loader'
 import UserActions from './shared/UserActions'
 import Filter from './shared/Filter'
+import Title from './shared/Title'
+import Job from './shared/Job'
 
 import { fetchData } from '../utils/api';
 import { getJobs } from '../utils/data'
@@ -75,8 +78,8 @@ class App extends Component {
             animation: ${appear} 0.5s 0.1s ease-out both
         `
 
-        const jobList = getJobs(this.state);
-        console.log(jobList)
+        const list = getJobs(this.state);
+        
         return (
             <div>
                 <StyledFilter 
@@ -84,6 +87,40 @@ class App extends Component {
                     span={ filter.span }
                     onChange={ this.handleChangeFilter }
                 />
+
+                { filter.span === 'WEEK' && 
+                    this.renderListForWeek(list)
+                }
+
+            </div>
+        )
+    }
+
+    renderListForWeek(list) {
+        return (
+            <div>
+                { list.older.length > 0 &&
+                    <div>
+                        <Title>ältere Jobs</Title>
+                        
+                        { list.older.map(job => {
+                            return <Job 
+                                key={job.id}
+                            />
+                        })}
+                    </div>
+                }
+
+                <Title>diese Woche</Title>
+                
+                { list.current.map(job => {
+                    return <Job 
+                        key={job.id}
+                        title={ job.title }
+                        deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
+                        effort={ job.effort }
+                    />
+                })}
             </div>
         )
     }

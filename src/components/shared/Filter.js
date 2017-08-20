@@ -6,7 +6,7 @@ import Select from './Select'
 
 const View = styled.section`
     margin-top: 1.5em;
-    margin-bottom: 1.5em;
+    margin-bottom: 2.5em;
     font-weight: 300;
 
     @media (min-width: 48em) {
