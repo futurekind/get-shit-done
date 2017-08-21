@@ -30,7 +30,7 @@ class App extends Component {
             hasLoginError: false,
             isFetching: true,
             filter: {
-                status: 'OPEN',
+                status: 'ALL',
                 span: 'WEEK'
             }
         }

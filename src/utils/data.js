@@ -11,7 +11,7 @@ export const getJobs = ({
     filter
 }) => {
     const user = users.filter(u => u.email === email && !u.isArchived)[0] || {}
-    const now = '2017-08-21'//new Date()
+    const now = new Date()
     const lastWeek = subWeeks(now, 1)
     const nextWeek = addWeeks(now, 1)
 

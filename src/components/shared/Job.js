@@ -7,32 +7,70 @@ import Paper from './Paper'
 const View = styled(Paper)`
     margin-bottom: 12px;
     display: flex;
+    position: relative;
 `
 
 const CheckContainer = styled.div`
-    width: 60px;
+    width: 40px;
 `
 
 const Content = styled.div`
     flex: 1;
     display: flex;
+    flex-direction: column;
+
+    @media (min-width: 48em) {
+        flex-direction: row;
+        // align-items: center;
+    }
+`
+
+const MainCol = styled.div`
+    order: 2;
+
+    @media (min-width: 48em) {
+        flex: 1;
+        padding-right: 12px;
+        order: 0;
+    }
 `
 
 const Title = styled.div`
     font-weight: 700;
     letter-spacing: 0.5px;
-    flex: 2;
+`
+
+const Subtitle = styled.div`
+    font-weight: 300;
+    font-size: 14px;
+
+    span {
+        color: #bdbdbd;
+    }
 `
 
 const Deadline = styled.div`
-    flex: 1;
     font-size: 14px;
+    order: 1;
+
+    @media (min-width: 48em) {
+        padding-top: 2px;
+        padding-right: 12px;
+        order: 0;
+    }
 `
 
 const Effort = styled.div`
     font-size: 26px;
     color: #bdbdbd;
     line-height: 1;
+    text-align: right;
+    position: absolute;
+    right: 12px;
+
+    @media (min-width: 48em) {
+        position: static;
+    }
 `
 
 const Job = props => {
@@ -40,7 +78,10 @@ const Job = props => {
         <View>
             <CheckContainer></CheckContainer>
             <Content>
-                <Title>{ props.title }</Title>
+                <MainCol>
+                    <Title>{props.title}</Title>
+                    <Subtitle>cadf-047-web-seminarprotal <br/><span>DEV Frontend</span></Subtitle>
+                </MainCol>
                 <Deadline>{ props.deadline }</Deadline>
                 <Effort>{`${props.effort} h`}</Effort>
             </Content>
