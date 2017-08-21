@@ -123,6 +123,7 @@ class App extends Component {
                         effort={ job.effort }
                         phase={ job.phase.title }
                         project={`${job.project.shortcut} / ${job.project.title}`}
+                        done={ job.isDone }
                     />
                 })}
             </div>

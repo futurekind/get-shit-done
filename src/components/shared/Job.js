@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import Paper from './Paper'
 
@@ -8,6 +8,21 @@ const View = styled(Paper)`
     margin-bottom: 12px;
     display: flex;
     position: relative;
+    cursor: pointer;
+    transition: transform .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.01);
+    }
+
+    ${props => {
+        if(props.done) {
+            return css`
+                opacity: 0.6;
+                box-shadow: none;
+            `
+        }
+    }}
 `
 
 const CheckContainer = styled.div`
@@ -75,7 +90,7 @@ const Effort = styled.div`
 
 const Job = props => {
     return (
-        <View>
+        <View done={ props.done }>
             <CheckContainer></CheckContainer>
             <Content>
                 <MainCol>
@@ -95,6 +110,7 @@ Job.propTypes = {
     effort: PropTypes.number,
     phase: PropTypes.string,
     project: PropTypes.string,
+    done: PropTypes.bool,
 }
 
 export default Job
