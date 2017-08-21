@@ -26,6 +26,8 @@ class App extends Component {
             email: null,
             users: [],
             jobs: [],
+            phases: [],
+            projects: [],
             needsToLogin: false,
             hasLoginError: false,
             isFetching: true,
@@ -119,6 +121,8 @@ class App extends Component {
                         title={ job.title }
                         deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
                         effort={ job.effort }
+                        phase={ job.phase.title }
+                        project={`${job.project.shortcut} / ${job.project.title}`}
                     />
                 })}
             </div>
@@ -168,11 +172,11 @@ class App extends Component {
     }
 
     recievedData = ([
-        users, jobs
+        users, jobs, phases, projects
     ]) => {
         this.setState({
             isFetching: false,
-            users, jobs
+            users, jobs, phases, projects
         }, () => {
             this.getUserFromLocalStorage()
         })

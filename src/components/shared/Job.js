@@ -54,7 +54,7 @@ const Deadline = styled.div`
     order: 1;
 
     @media (min-width: 48em) {
-        padding-top: 2px;
+        padding-top: 5px;
         padding-right: 12px;
         order: 0;
     }
@@ -80,7 +80,7 @@ const Job = props => {
             <Content>
                 <MainCol>
                     <Title>{props.title}</Title>
-                    <Subtitle>cadf-047-web-seminarprotal <br/><span>DEV Frontend</span></Subtitle>
+                    <Subtitle>{ props.project } <br/><span>{ props.phase }</span></Subtitle>
                 </MainCol>
                 <Deadline>{ props.deadline }</Deadline>
                 <Effort>{`${props.effort} h`}</Effort>
@@ -93,6 +93,8 @@ Job.propTypes = {
     title: PropTypes.string,
     deadline: PropTypes.string,
     effort: PropTypes.number,
+    phase: PropTypes.string,
+    project: PropTypes.string,
 }
 
 export default Job
