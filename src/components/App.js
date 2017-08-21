@@ -53,7 +53,7 @@ class App extends Component {
         return (
             <div>
                 <Wrapper>
-                    <UserActions user={ user} />
+                    <UserActions user={ user} onClick={ this.handleLogout } />
                     <Logo />
                     { this.renderMain() }
                     { this.renderLogin() }
@@ -213,6 +213,14 @@ class App extends Component {
                 hasLoginError: true
             })
         }
+    }
+
+    handleLogout = () => {
+        localStorage.removeItem(LS_KEY)
+        this.setState({
+            needsToLogin: true,
+            email: null,
+        })
     }
 
     handleChangeFilter = (type, value) => {
