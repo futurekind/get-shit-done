@@ -116,6 +116,9 @@ class App extends Component {
                 <Title>diese Woche</Title>
                 
                 { list.current.map(job => {
+                    const now = format(new Date(), 'YYYY-MM-DD')
+                    const dl = format(job.deadlineAt, 'YYYY-MM-DD')
+
                     return <Job 
                         key={job.id}
                         title={ job.title }
@@ -124,6 +127,8 @@ class App extends Component {
                         phase={ job.phase.title }
                         project={`${job.project.shortcut} / ${job.project.title}`}
                         done={ job.isDone }
+                        today={ now === dl }
+                        overdue={ now > dl }
                     />
                 })}
             </div>

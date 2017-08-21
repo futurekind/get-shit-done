@@ -18,8 +18,22 @@ const View = styled(Paper)`
     ${props => {
         if(props.done) {
             return css`
-                opacity: 0.6;
+                opacity: 0.5;
                 box-shadow: none;
+            `
+        }
+
+        if(props.today && !props.done) {
+            return css`
+                box-shadow: rgba(68, 160, 68, 0.5) 0px 1px 6px, 
+                            rgba(68, 160, 68, 0.5) 0px 1px 4px
+            `
+        }
+
+        if (props.overdue && !props.done) {
+            return css`
+                box-shadow: rgba(233, 30, 99, 0.3) 0px 1px 6px, 
+                            rgba(233, 30, 99, 0.3) 0px 1px 4px
             `
         }
     }}
@@ -36,7 +50,6 @@ const Content = styled.div`
 
     @media (min-width: 48em) {
         flex-direction: row;
-        // align-items: center;
     }
 `
 
@@ -90,7 +103,7 @@ const Effort = styled.div`
 
 const Job = props => {
     return (
-        <View done={ props.done }>
+        <View done={ props.done } today={ props.today } overdue={ props.overdue }>
             <CheckContainer></CheckContainer>
             <Content>
                 <MainCol>
@@ -111,6 +124,8 @@ Job.propTypes = {
     phase: PropTypes.string,
     project: PropTypes.string,
     done: PropTypes.bool,
+    today: PropTypes.bool,
+    overdue: PropTypes.bool,
 }
 
 export default Job
