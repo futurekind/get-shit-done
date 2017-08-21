@@ -1,15 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 import Paper from './Paper'
+
+const appear = keyframes`
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+`
 
 const View = styled(Paper)`
     margin-bottom: 12px;
     display: flex;
     position: relative;
     cursor: pointer;
+    transform: scale(0);
     transition: transform .2s ease-in-out;
+    animation: ${appear} .1s 0.${props => props.index}s ease-out both;
 
     &:hover {
         transform: scale(1.01);
@@ -103,7 +115,7 @@ const Effort = styled.div`
 
 const Job = props => {
     return (
-        <View done={ props.done } today={ props.today } overdue={ props.overdue }>
+        <View done={ props.done } today={ props.today } overdue={ props.overdue } index={ props.index }>
             <CheckContainer></CheckContainer>
             <Content>
                 <MainCol>

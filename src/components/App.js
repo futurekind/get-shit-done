@@ -115,7 +115,7 @@ class App extends Component {
 
                 <Title>diese Woche</Title>
                 
-                { list.current.map(job => {
+                { list.current.map((job, index) => {
                     const now = format(new Date(), 'YYYY-MM-DD')
                     const dl = format(job.deadlineAt, 'YYYY-MM-DD')
 
@@ -129,6 +129,7 @@ class App extends Component {
                         done={ job.isDone }
                         today={ now === dl }
                         overdue={ now > dl }
+                        index={ index }
                     />
                 })}
             </div>
