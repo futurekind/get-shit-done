@@ -13,7 +13,7 @@ import Title from './shared/Title'
 import Job from './shared/Job'
 
 import { fetchData, updateJob } from '../utils/api';
-import { getJobs, getIndex } from '../utils/data'
+import { getJobs, getIndex, getEffortStats } from '../utils/data'
 
 const LS_KEY = 'blat-jobs__user'
 
@@ -107,11 +107,17 @@ class App extends Component {
     }
 
     renderListForWeek(list) {
+        const olderEffort = getEffortStats(list.older);
+        const currentEffort = getEffortStats(list.current);
+
         return (
             <div>
                 { list.older.length > 0 &&
                     <div>
-                        <Title>ältere Jobs</Title>
+                        <Title>
+                            älter
+                            <span>{olderEffort.done}h / {olderEffort.total}h</span>
+                        </Title>
                         
                         { list.older.map((job, index) => {
                             return <Job 
@@ -132,7 +138,10 @@ class App extends Component {
                     </div>
                 }
 
-                <Title>diese Woche</Title>
+                <Title>
+                    diese Woche
+                    <span>{currentEffort.done}h / {currentEffort.total}h</span>
+                </Title>
                 
                 { list.current.map((job, index) => {
                     const now = format(new Date(), 'YYYY-MM-DD')
@@ -158,10 +167,13 @@ class App extends Component {
     }
 
     renderList(list, field) {
+        const { done, total } = getEffortStats(list[field]);
         
         return (
             <div>
-                <Title></Title>
+                <Title>
+                    <span>{done}h / {total}h</span>
+                </Title>
                 { list[field].map((job, index) => {
                     return <Job 
                         key={job.id}
