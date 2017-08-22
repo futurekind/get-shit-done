@@ -135,8 +135,17 @@ const CheckIcon = styled.svg`
 `
 
 const Job = props => {
+    
+    const onClick = () => props.onClick(props.id)
+
     return (
-        <View done={ props.done } today={ props.today } overdue={ props.overdue } index={ props.index }>
+        <View 
+            done={ props.done } 
+            today={ props.today } 
+            overdue={ props.overdue } 
+            index={ props.index }
+            onClick={ onClick }
+        >
             <CheckContainer>
                 <Checkbox done={ props.done}>
                     <CheckIcon viewBox="0 0 24 24">
@@ -156,7 +165,12 @@ const Job = props => {
     )
 }
 
+Job.defaultProps = {
+    onClick: () => {}
+}
+
 Job.propTypes = {
+    id: PropTypes.string,
     title: PropTypes.string,
     deadline: PropTypes.string,
     effort: PropTypes.number,
@@ -165,6 +179,7 @@ Job.propTypes = {
     done: PropTypes.bool,
     today: PropTypes.bool,
     overdue: PropTypes.bool,
+    onClick: PropTypes.func,
 }
 
 export default Job

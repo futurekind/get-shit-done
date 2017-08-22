@@ -13,7 +13,7 @@ import Title from './shared/Title'
 import Job from './shared/Job'
 
 import { fetchData } from '../utils/api';
-import { getJobs } from '../utils/data'
+import { getJobs, getIndex } from '../utils/data'
 
 const LS_KEY = 'blat-jobs__user'
 
@@ -121,6 +121,7 @@ class App extends Component {
 
                     return <Job 
                         key={job.id}
+                        id={job.id}
                         title={ job.title }
                         deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
                         effort={ job.effort }
@@ -130,6 +131,7 @@ class App extends Component {
                         today={ now === dl }
                         overdue={ now > dl }
                         index={ index }
+                        onClick={ this.handleJobToggle }
                     />
                 })}
             </div>
@@ -229,6 +231,22 @@ class App extends Component {
                 ...this.state.filter,
                 [type]: value
             }
+        })
+    }
+
+    handleJobToggle = id => {
+        const index = getIndex(this.state, 'jobs', id)
+        const job = {
+            ...this.state.jobs[index],
+            isDone: !this.state.jobs[index].isDone
+        }
+
+        this.setState({
+            jobs: [
+                ...this.state.jobs.slice(0, index),
+                job,
+                ...this.state.jobs.slice(index + 1),
+            ]
         })
     }
 }

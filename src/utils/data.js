@@ -98,3 +98,7 @@ export const getJobs = ({
             older: []
         })
 }
+
+export const getIndex = (state, field, id) => {
+    return state[field].map(e => e.id).indexOf(id)
+} 
