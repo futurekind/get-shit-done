@@ -14,6 +14,7 @@ import Job from './shared/Job'
 
 import { fetchData, updateJob } from '../utils/api';
 import { getJobs, getIndex, getEffortStats } from '../utils/data'
+import createSockets, { getState } from '../utils/sockets'
 
 const LS_KEY = 'blat-jobs__user'
 
@@ -43,6 +44,8 @@ class App extends Component {
         fetchData()
             .then(this.recievedData)
             .catch(this.recievedError)
+
+        createSockets(this.handleSocketsData)
     }
     
     render () {
@@ -309,6 +312,12 @@ class App extends Component {
             name: 'isDone',
             value: !this.state.jobs[index].isDone
         })
+    }
+
+    handleSocketsData = data => {
+        this.setState(
+            getState(this.state, data)
+        )
     }
 }
 
