@@ -12,7 +12,7 @@ import Filter from './shared/Filter'
 import Title from './shared/Title'
 import Job from './shared/Job'
 
-import { fetchData } from '../utils/api';
+import { fetchData, updateJob } from '../utils/api';
 import { getJobs, getIndex } from '../utils/data'
 
 const LS_KEY = 'blat-jobs__user'
@@ -247,6 +247,11 @@ class App extends Component {
                 job,
                 ...this.state.jobs.slice(index + 1),
             ]
+        })
+
+        updateJob(id, {
+            name: 'isDone',
+            value: !this.state.jobs[index].isDone
         })
     }
 }
