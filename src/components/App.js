@@ -94,6 +94,14 @@ class App extends Component {
                     this.renderListForWeek(list)
                 }
 
+                { filter.span === 'LAST_WEEK' && 
+                    this.renderList(list, 'older')
+                }
+
+                { filter.span === 'NEXT_WEEK' && 
+                    this.renderList(list, 'current')
+                }
+
             </div>
         )
     }
@@ -105,9 +113,20 @@ class App extends Component {
                     <div>
                         <Title>ältere Jobs</Title>
                         
-                        { list.older.map(job => {
+                        { list.older.map((job, index) => {
                             return <Job 
                                 key={job.id}
+                                id={job.id}
+                                title={ job.title }
+                                deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
+                                effort={ job.effort }
+                                phase={ job.phase.title }
+                                project={`${job.project.shortcut} / ${job.project.title}`}
+                                done={ job.isDone }
+                                today={ false }
+                                overdue={ true }
+                                index={ index }
+                                onClick={ this.handleJobToggle }
                             />
                         })}
                     </div>
@@ -130,6 +149,31 @@ class App extends Component {
                         done={ job.isDone }
                         today={ now === dl }
                         overdue={ now > dl }
+                        index={ index }
+                        onClick={ this.handleJobToggle }
+                    />
+                })}
+            </div>
+        )
+    }
+
+    renderList(list, field) {
+        
+        return (
+            <div>
+                <Title></Title>
+                { list[field].map((job, index) => {
+                    return <Job 
+                        key={job.id}
+                        id={job.id}
+                        title={ job.title }
+                        deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
+                        effort={ job.effort }
+                        phase={ job.phase.title }
+                        project={`${job.project.shortcut} / ${job.project.title}`}
+                        done={ job.isDone }
+                        today={ false }
+                        overdue={ field === 'older' }
                         index={ index }
                         onClick={ this.handleJobToggle }
                     />
