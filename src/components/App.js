@@ -26,11 +26,13 @@ class App extends Component {
             email: null,
             users: [],
             jobs: [],
+            phases: [],
+            projects: [],
             needsToLogin: false,
             hasLoginError: false,
             isFetching: true,
             filter: {
-                status: 'OPEN',
+                status: 'ALL',
                 span: 'WEEK'
             }
         }
@@ -51,7 +53,7 @@ class App extends Component {
         return (
             <div>
                 <Wrapper>
-                    <UserActions user={ user} />
+                    <UserActions user={ user} onClick={ this.handleLogout } />
                     <Logo />
                     { this.renderMain() }
                     { this.renderLogin() }
@@ -113,12 +115,21 @@ class App extends Component {
 
                 <Title>diese Woche</Title>
                 
-                { list.current.map(job => {
+                { list.current.map((job, index) => {
+                    const now = format(new Date(), 'YYYY-MM-DD')
+                    const dl = format(job.deadlineAt, 'YYYY-MM-DD')
+
                     return <Job 
                         key={job.id}
                         title={ job.title }
                         deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
                         effort={ job.effort }
+                        phase={ job.phase.title }
+                        project={`${job.project.shortcut} / ${job.project.title}`}
+                        done={ job.isDone }
+                        today={ now === dl }
+                        overdue={ now > dl }
+                        index={ index }
                     />
                 })}
             </div>
@@ -168,11 +179,11 @@ class App extends Component {
     }
 
     recievedData = ([
-        users, jobs
+        users, jobs, phases, projects
     ]) => {
         this.setState({
             isFetching: false,
-            users, jobs
+            users, jobs, phases, projects
         }, () => {
             this.getUserFromLocalStorage()
         })
@@ -202,6 +213,14 @@ class App extends Component {
                 hasLoginError: true
             })
         }
+    }
+
+    handleLogout = () => {
+        localStorage.removeItem(LS_KEY)
+        this.setState({
+            needsToLogin: true,
+            email: null,
+        })
     }
 
     handleChangeFilter = (type, value) => {

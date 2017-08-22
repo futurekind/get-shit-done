@@ -8,14 +8,25 @@ export const getJobs = ({
     email,
     users,
     jobs,
-    filter
+    filter,
+    phases,
+    projects
 }) => {
     const user = users.filter(u => u.email === email && !u.isArchived)[0] || {}
-    const now = '2017-08-21'//new Date()
+    const now = new Date()
     const lastWeek = subWeeks(now, 1)
     const nextWeek = addWeeks(now, 1)
 
     return jobs
+        .map(job => {
+            const phase = phases.filter(p => p.id === job.phaseId)[0] || {}
+            const project = projects.filter(p => p.id === phase.projectId)[0] || {}
+            return {
+                ...job,
+                phase,
+                project
+            }
+        })
         .filter(job => job.userId === user.id && !job.isArchived)
         .filter(job => {
             if(filter.status === 'OPEN') {

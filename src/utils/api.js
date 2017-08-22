@@ -13,7 +13,17 @@ const fetchJobs = () =>
     fetch(`${API}/jobs`)
         .then(dealWithResponse)
 
+const fetchPhases = () =>
+    fetch(`${API}/phases`)
+        .then(dealWithResponse)
+
+const fetchProjects = () =>
+    fetch(`${API}/projects`)
+        .then(dealWithResponse)
+
 export const fetchData = () => Promise.all([
     fetchUsers(),
-    fetchJobs()
+    fetchJobs(),
+    fetchPhases(),
+    fetchProjects(),
 ])
