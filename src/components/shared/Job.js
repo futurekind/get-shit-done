@@ -24,7 +24,7 @@ const View = styled(Paper)`
     animation: ${appear} .1s 0.${props => props.index}s ease-out both;
 
     &:hover {
-        transform: scale(1.01);
+        svg { fill: #1fc2f4 }
     }
 
     ${props => {
@@ -32,6 +32,11 @@ const View = styled(Paper)`
             return css`
                 opacity: 0.5;
                 box-shadow: none;
+
+                &:hover {
+                    svg { display: none; }
+                    span { background-color: #fff; }
+                }
             `
         }
 
@@ -52,7 +57,7 @@ const View = styled(Paper)`
 `
 
 const CheckContainer = styled.div`
-    width: 40px;
+    padding-right: 12px;
 `
 
 const Content = styled.div`
@@ -113,10 +118,32 @@ const Effort = styled.div`
     }
 `
 
+const Checkbox = styled.span`
+    width: 30px;
+    height: 30px;
+    border: 2px solid #1fc2f4;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: ${props => props.done ? '#1fc2f4' : '#fff'};
+`
+
+const CheckIcon = styled.svg`
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    transition: fill 0.1s ease-in-out;
+`
+
 const Job = props => {
     return (
         <View done={ props.done } today={ props.today } overdue={ props.overdue } index={ props.index }>
-            <CheckContainer></CheckContainer>
+            <CheckContainer>
+                <Checkbox done={ props.done}>
+                    <CheckIcon viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </CheckIcon>
+                </Checkbox>
+            </CheckContainer>
             <Content>
                 <MainCol>
                     <Title>{props.title}</Title>
