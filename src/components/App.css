@@ -1,0 +1,15 @@
+html {
+    box-sizing: border-box
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Saira Condensed', sans-serif;
+    color: #7b7b7b;
+    background-color: #f1f1f1;
+}
