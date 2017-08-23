@@ -1,3 +1,8 @@
+import { createUserId, getUserId } from './user';
+
+createUserId()
+const userId = getUserId() || '';
+
 const API = 'https://tools.e-contents.de';
 
 const dealWithResponse = resp => {
@@ -27,3 +32,13 @@ export const fetchData = () => Promise.all([
     fetchPhases(),
     fetchProjects(),
 ])
+
+export const updateJob = (id, payload) => {
+    return fetch(`${API}/jobs/${id}?clientUserId=${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ [payload.name]: payload.value })
+    })
+}

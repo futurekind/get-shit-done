@@ -10,7 +10,7 @@ const View = styled.div`
 
 const Paper = props => {
     return (
-        <View className={ props.className }>
+        <View className={ props.className } onClick={ props.onClick }>
             { props.children }
         </View>
     )

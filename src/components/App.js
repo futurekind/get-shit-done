@@ -12,8 +12,9 @@ import Filter from './shared/Filter'
 import Title from './shared/Title'
 import Job from './shared/Job'
 
-import { fetchData } from '../utils/api';
-import { getJobs } from '../utils/data'
+import { fetchData, updateJob } from '../utils/api';
+import { getJobs, getIndex, getEffortStats } from '../utils/data'
+import createSockets, { getState } from '../utils/sockets'
 
 const LS_KEY = 'blat-jobs__user'
 
@@ -43,6 +44,8 @@ class App extends Component {
         fetchData()
             .then(this.recievedData)
             .catch(this.recievedError)
+
+        createSockets(this.handleSocketsData)
     }
     
     render () {
@@ -94,26 +97,54 @@ class App extends Component {
                     this.renderListForWeek(list)
                 }
 
+                { filter.span === 'LAST_WEEK' && 
+                    this.renderList(list, 'older')
+                }
+
+                { filter.span === 'NEXT_WEEK' && 
+                    this.renderList(list, 'current')
+                }
+
             </div>
         )
     }
 
     renderListForWeek(list) {
+        const olderEffort = getEffortStats(list.older);
+        const currentEffort = getEffortStats(list.current);
+
         return (
             <div>
                 { list.older.length > 0 &&
                     <div>
-                        <Title>ältere Jobs</Title>
+                        <Title>
+                            älter
+                            <span>{olderEffort.done}h / {olderEffort.total}h</span>
+                        </Title>
                         
-                        { list.older.map(job => {
+                        { list.older.map((job, index) => {
                             return <Job 
                                 key={job.id}
+                                id={job.id}
+                                title={ job.title }
+                                deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
+                                effort={ job.effort }
+                                phase={ job.phase.title }
+                                project={`${job.project.shortcut} / ${job.project.title}`}
+                                done={ job.isDone }
+                                today={ false }
+                                overdue={ true }
+                                index={ index }
+                                onClick={ this.handleJobToggle }
                             />
                         })}
                     </div>
                 }
 
-                <Title>diese Woche</Title>
+                <Title>
+                    diese Woche
+                    <span>{currentEffort.done}h / {currentEffort.total}h</span>
+                </Title>
                 
                 { list.current.map((job, index) => {
                     const now = format(new Date(), 'YYYY-MM-DD')
@@ -121,6 +152,7 @@ class App extends Component {
 
                     return <Job 
                         key={job.id}
+                        id={job.id}
                         title={ job.title }
                         deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
                         effort={ job.effort }
@@ -130,6 +162,35 @@ class App extends Component {
                         today={ now === dl }
                         overdue={ now > dl }
                         index={ index }
+                        onClick={ this.handleJobToggle }
+                    />
+                })}
+            </div>
+        )
+    }
+
+    renderList(list, field) {
+        const { done, total } = getEffortStats(list[field]);
+        
+        return (
+            <div>
+                <Title>
+                    <span>{done}h / {total}h</span>
+                </Title>
+                { list[field].map((job, index) => {
+                    return <Job 
+                        key={job.id}
+                        id={job.id}
+                        title={ job.title }
+                        deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
+                        effort={ job.effort }
+                        phase={ job.phase.title }
+                        project={`${job.project.shortcut} / ${job.project.title}`}
+                        done={ job.isDone }
+                        today={ false }
+                        overdue={ field === 'older' }
+                        index={ index }
+                        onClick={ this.handleJobToggle }
                     />
                 })}
             </div>
@@ -230,6 +291,33 @@ class App extends Component {
                 [type]: value
             }
         })
+    }
+
+    handleJobToggle = id => {
+        const index = getIndex(this.state, 'jobs', id)
+        const job = {
+            ...this.state.jobs[index],
+            isDone: !this.state.jobs[index].isDone
+        }
+
+        this.setState({
+            jobs: [
+                ...this.state.jobs.slice(0, index),
+                job,
+                ...this.state.jobs.slice(index + 1),
+            ]
+        })
+
+        updateJob(id, {
+            name: 'isDone',
+            value: !this.state.jobs[index].isDone
+        })
+    }
+
+    handleSocketsData = data => {
+        this.setState(
+            getState(this.state, data)
+        )
     }
 }
 

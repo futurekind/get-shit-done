@@ -98,3 +98,17 @@ export const getJobs = ({
             older: []
         })
 }
+
+export const getIndex = (state, field, id) => {
+    return state[field].map(e => e.id).indexOf(id)
+} 
+
+export const getEffortStats = jobList => jobList.reduce((acc, job) => {
+    return {
+        done: job.isDone ? (job.effort + acc.done) : acc.done,
+        total: acc.total + job.effort
+    }
+}, {
+    done: 0,
+    total: 0
+})
