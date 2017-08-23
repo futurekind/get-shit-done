@@ -27,7 +27,12 @@ export const getJobs = ({
                 project
             }
         })
-        .filter(job => job.userId === user.id && !job.isArchived)
+        .filter(job => {
+            return job.userId === user.id && 
+                !job.isArchived &&
+                !job.phase.isArchived &&
+                !job.project.isArchived
+        })
         .filter(job => {
             if(filter.status === 'OPEN') {
                 return job.isDone === false
