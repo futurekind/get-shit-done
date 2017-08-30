@@ -130,6 +130,7 @@ class App extends Component {
                                 deadline={ format(job.deadlineAt, 'DD.MM.YYYY') }
                                 effort={ job.effort }
                                 phase={ job.phase.title }
+                                description={ job.description }
                                 project={`${job.project.shortcut} / ${job.project.title}`}
                                 done={ job.isDone }
                                 today={ false }
@@ -149,7 +150,7 @@ class App extends Component {
                 { list.current.map((job, index) => {
                     const now = format(new Date(), 'YYYY-MM-DD')
                     const dl = format(job.deadlineAt, 'YYYY-MM-DD')
-
+console.log(job);
                     return <Job 
                         key={job.id}
                         id={job.id}
@@ -163,6 +164,7 @@ class App extends Component {
                         overdue={ now > dl }
                         index={ index }
                         onClick={ this.handleJobToggle }
+                        description={job.description}
                     />
                 })}
             </div>
@@ -191,6 +193,7 @@ class App extends Component {
                         overdue={ field === 'older' }
                         index={ index }
                         onClick={ this.handleJobToggle }
+                        description={job.description}
                     />
                 })}
             </div>
