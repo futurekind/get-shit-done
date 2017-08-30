@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled, { css, keyframes } from 'styled-components'
 
 import Paper from './Paper'
+import nl2br from './BreakText'
 
 const appear = keyframes`
     from {
@@ -134,6 +135,19 @@ const CheckIcon = styled.svg`
     transition: fill 0.1s ease-in-out;
 `
 
+const Description = styled.div`
+    margin-top: 12px;
+    padding-left: 12px;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    border-left: 1px solid #1fc2f4;
+
+    p {
+        margin: 0.5em 0;
+    }
+`
+
 const Job = props => {
     
     const onClick = () => props.onClick(props.id)
@@ -157,6 +171,11 @@ const Job = props => {
                 <MainCol>
                     <Title>{props.title}</Title>
                     <Subtitle>{ props.project } <br/><span>{ props.phase }</span></Subtitle>
+                    { props.description && props.description !== '' &&
+                        <Description>
+                            {nl2br(props.description)}
+                        </Description>
+                    }
                 </MainCol>
                 <Deadline>{ props.deadline }</Deadline>
                 <Effort>{`${props.effort} h`}</Effort>
@@ -180,6 +199,7 @@ Job.propTypes = {
     today: PropTypes.bool,
     overdue: PropTypes.bool,
     onClick: PropTypes.func,
+    description: PropTypes.string,
 }
 
 export default Job
