@@ -30,6 +30,8 @@ export const getJobs = ({
         .filter(job => {
             return job.userId === user.id && 
                 !job.isArchived &&
+                Object.keys(job.phase).length > 0 &&
+                Object.keys(job.project).length > 0 &&
                 !job.phase.isArchived &&
                 !job.project.isArchived
         })
