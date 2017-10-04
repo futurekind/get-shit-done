@@ -1,7 +1,7 @@
 {
   "name": "blat-jobs",
   "homepage": "http://dev.blateral.com/jobs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "devDependencies": {
     "date-fns": "^1.28.5",
